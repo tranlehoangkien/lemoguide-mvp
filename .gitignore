@@ -1,0 +1,23 @@
+# Backend (Java/Maven)
+backend/target/
+backend/.idea/
+backend/*.iml
+backend/.mvn/wrapper/maven-wrapper.jar
+*.class
+*.log
+
+# Frontend (React/Vite) - áp dụng cho cả frontend-admin và frontend-user
+node_modules/
+dist/
+.env
+.env.local
+*.local
+
+# IDE chung
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
