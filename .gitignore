@@ -3,15 +3,21 @@ backend/target/
 backend/.idea/
 backend/*.iml
 backend/.mvn/wrapper/maven-wrapper.jar
+backend/uploads/
 *.class
 *.log
 
 # Frontend (React/Vite) - áp dụng cho cả frontend-admin và frontend-user
 node_modules/
 dist/
-.env
-.env.local
 *.local
+
+# Secrets / local config - KHÔNG commit file cấu hình chứa tài khoản, mật khẩu
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.env
 
 # IDE chung
 .idea/
@@ -21,3 +27,25 @@ dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Tài liệu nội bộ / tài liệu thiết kế (không đưa lên repo code)
+docs/
+Feature.md
+*.docx
+
+# Công cụ AI / agent / knowledge graph cục bộ
+.claude/
+.agents/
+.codex/
+.mcp.json
+AGENTS.md
+CLAUDE.md
+graphify-out/
+skills-lock.json
+
+# File tạm / rác sinh ra khi chạy
+uploads/
+*.stackdump
+cookies.txt
+/query
+tmp-preview.*

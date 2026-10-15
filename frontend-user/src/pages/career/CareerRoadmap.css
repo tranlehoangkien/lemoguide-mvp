@@ -1,0 +1,95 @@
+/* Lộ trình phát triển (standalone gallery of saved AI Coach career roadmaps).
+ * Shares the app's list-page pattern (Page/PageHeader/Card/EmptyState) and the
+ * same neutral ink + single green accent as every other page. */
+.roadmap-page { min-width: 0; }
+
+.roadmap-flow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0 28px;
+  color: var(--ui-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.roadmap-flow span:not(:last-child)::after {
+  content: '→';
+  margin-left: 10px;
+  color: var(--ui-border);
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.roadmap-card .ui-card__core {
+  display: flex;
+  gap: 18px;
+}
+
+.roadmap-card__ring {
+  flex: none;
+  width: 64px;
+  height: 64px;
+}
+
+.roadmap-card__ring::before {
+  inset: 5px;
+}
+
+.roadmap-card__ring > strong {
+  font-size: 0.9375rem;
+}
+
+.roadmap-card__body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.roadmap-card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-card__meta {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+}
+
+.roadmap-card__tasks {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  color: var(--ui-text-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.roadmap-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.roadmap-card__skel {
+  height: 132px;
+}
+
+@media (max-width: 640px) {
+  .roadmap-grid { grid-template-columns: 1fr; }
+  .roadmap-flow { flex-wrap: wrap; }
+  .roadmap-card .ui-card__core { padding: 16px; }
+}

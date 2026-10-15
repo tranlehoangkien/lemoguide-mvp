@@ -1,0 +1,11 @@
+.progress-link { display: inline-flex; align-items: center; gap: 4px; color: var(--ui-accent-text); font-size: 0.875rem; font-weight: 600; white-space: nowrap; text-decoration: none; transition: color var(--ui-dur) var(--ui-ease); }
+.progress-link:hover { color: var(--ui-accent); }
+.progress-link:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 3px; border-radius: 4px; }
+.progress-footnote { margin: 14px 0 0; }
+.progress-stale { justify-content: space-between; padding: 12px 16px; border-radius: var(--ui-r-field); background: var(--ui-surface-2); }
+.progress-stale p { margin: 0; }
+.progress-skeleton { display: grid; gap: 20px; }
+.progress-skeleton .ui-skel { display: block; height: 240px; border-radius: var(--ui-r-shell); }
+@media (max-width: 767px) {
+  .progress-skeleton .ui-skel { height: 180px; }
+}
