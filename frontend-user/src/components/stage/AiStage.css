@@ -1,0 +1,787 @@
+/*
+ * AI stage shared by "Tạo CV với AI" and "Việc làm phù hợp" (user app only, so
+ * it lives here and not in the shared ui.css). The stage is always dark: the
+ * tokens below remap the shared --ui-* variables locally so form fields,
+ * buttons, template cards and job cards render correctly on the aurora in both
+ * app themes.
+ *
+ * Motion rule for this file: everything that loops animates transform/opacity
+ * only, and there is no backdrop-filter over the moving background.
+ */
+
+.ui-aistage {
+  --ui-accent: #22c55e;
+  --ui-accent-hover: #16a34a;
+  --ui-accent-text: #4ade80;
+  --ui-accent-soft: rgba(74, 222, 128, 0.12);
+  --ui-accent-ring: rgba(74, 222, 128, 0.32);
+  --ui-surface: rgba(255, 255, 255, 0.06);
+  --ui-surface-2: rgba(255, 255, 255, 0.05);
+  --ui-border: rgba(255, 255, 255, 0.16);
+  --ui-hair: rgba(255, 255, 255, 0.1);
+  --ui-field-bg: rgba(255, 255, 255, 0.045);
+  --ui-field-border: rgba(255, 255, 255, 0.13);
+  --ui-text: #f1f5f9;
+  --ui-text-2: #d5dde9;
+  --ui-muted: #9fb0c6;
+  --ui-danger: #f87171;
+  --ui-danger-soft: rgba(248, 113, 113, 0.16);
+  --ui-info: #38bdf8;
+  --ui-info-soft: rgba(56, 189, 248, 0.14);
+  --ui-warning: #fbbf24;
+  --ui-warning-soft: rgba(251, 191, 36, 0.14);
+
+  --stage-ring: rgba(255, 255, 255, 0.1);
+  --stage-ring-strong: rgba(255, 255, 255, 0.24);
+
+  position: relative;
+  isolation: isolate;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #050d18;
+  color: var(--ui-text);
+  color-scheme: dark;
+}
+
+/* ---------- Aurora: glowing orbs drifting left to right ---------- */
+
+.ui-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+  /* Static base keeps the brand green on the left and violet on the right even between orbs */
+  background: linear-gradient(90deg, #04140f 0%, #05101c 42%, #070d22 72%, #0d0a25 100%);
+}
+
+/*
+ * All orbs share one width and one duration, so they ride the stage like a
+ * conveyor: evenly spaced, so the glow never leaves a gap. Colour, height and
+ * vertical position vary per orb for depth. --delay = -(phase x duration) sets
+ * where each orb starts (emerald left, then cyan, indigo, violet; teal is about
+ * to enter from the left).
+ */
+.ui-aurora__orb {
+  --w: 40cqw;
+  --h: 70cqh;
+  --y: 0cqh;
+  --rgb: 16, 185, 129;
+  --a: 0.8;
+  --dur: 44s;
+  --delay: 0s;
+  position: absolute;
+  top: var(--y);
+  left: 0;
+  width: var(--w);
+  height: var(--h);
+  background: radial-gradient(
+    closest-side,
+    rgba(var(--rgb), var(--a)) 0%,
+    rgba(var(--rgb), calc(var(--a) * 0.62)) 46%,
+    rgba(var(--rgb), 0) 100%
+  );
+  transform: translate3d(-100%, 0, 0);
+}
+
+.ui-aurora__orb--emerald {
+  --h: 96cqh;
+  --y: -12cqh;
+  --rgb: 16, 185, 129;
+  --a: 0.9;
+  --delay: -8.8s;
+}
+
+.ui-aurora__orb--teal {
+  --h: 56cqh;
+  --y: 6cqh;
+  --rgb: 45, 212, 191;
+  --a: 0.6;
+  --delay: 0s;
+}
+
+.ui-aurora__orb--cyan {
+  --h: 78cqh;
+  --y: 30cqh;
+  --rgb: 6, 182, 212;
+  --a: 0.78;
+  --delay: -17.6s;
+}
+
+.ui-aurora__orb--indigo {
+  --h: 92cqh;
+  --y: -18cqh;
+  --rgb: 79, 70, 229;
+  --a: 0.9;
+  --delay: -26.4s;
+}
+
+.ui-aurora__orb--violet {
+  --h: 74cqh;
+  --y: 36cqh;
+  --rgb: 168, 85, 247;
+  --a: 0.78;
+  --delay: -35.2s;
+}
+
+/* A slow band of light crossing the stage */
+.ui-aurora__sweep {
+  display: none;
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  width: 30cqw;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 50%, transparent 100%);
+  transform: translate3d(-40cqw, 0, 0) skewX(-18deg);
+}
+
+/* Fine dot grid, faded toward the edges: gives the glow a surface to sit on */
+.ui-aurora__grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1.2px);
+  background-size: 30px 30px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 15%, transparent 78%);
+  mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, #000 15%, transparent 78%);
+}
+
+/* Edge vignette + film grain (static, never scrolls with content) */
+.ui-aurora__shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 45%, transparent 38%, rgba(4, 9, 18, 0.38) 100%),
+    linear-gradient(180deg, rgba(4, 9, 18, 0.05) 0%, rgba(4, 9, 18, 0.28) 100%);
+}
+
+.ui-aurora__shade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/*
+ * The drift is the page's signature (explicitly requested), so it always runs.
+ * Users who ask the OS for reduced motion get the same drift at ~1.6x slower
+ * (--slow scales duration and delay together so the orbs keep their positions);
+ * the other effects below stay fully disabled for them.
+ */
+.ui-aurora {
+  --slow: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-aurora {
+    --slow: 1.6;
+  }
+}
+
+.ui-aurora__orb {
+  will-change: transform;
+  animation: ui-orb-drift calc(var(--dur, 32s) * var(--slow)) linear infinite;
+  animation-delay: calc(var(--delay, 0s) * var(--slow));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ui-aurora__sweep {
+    display: block;
+    will-change: transform;
+    animation: ui-sweep 16s linear infinite;
+  }
+}
+
+@keyframes ui-orb-drift {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(100cqw, 0, 0);
+  }
+}
+
+@keyframes ui-sweep {
+  from {
+    transform: translate3d(-40cqw, 0, 0) skewX(-18deg);
+  }
+  to {
+    transform: translate3d(115cqw, 0, 0) skewX(-18deg);
+  }
+}
+
+/* ---------- Layout ---------- */
+
+.ui-aistage__scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.ui-aistage__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  min-height: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: 24px var(--ui-page-pad) 48px;
+}
+
+.ui-aistage__top {
+  flex: none;
+}
+
+.ui-aistage__top .ui-btn {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px var(--stage-ring), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.ui-aistage__top .ui-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px var(--stage-ring-strong), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ui-aistage__top .ui-btn svg {
+  transition: transform 420ms var(--ui-ease);
+}
+
+.ui-aistage__top .ui-btn:hover:not(:disabled) svg {
+  transform: translateX(-3px);
+}
+
+.ui-aistage__grid {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+}
+
+@media (min-width: 1024px) {
+  .ui-aistage__grid {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 72px;
+  }
+}
+
+/* ---------- Intro ---------- */
+
+.ui-aistage__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.ui-aistage__mascot-wrap {
+  position: relative;
+  display: block;
+  margin: 4px 0 0 -8px;
+}
+
+/* Soft glow the mascot floats above */
+.ui-aistage__mascot-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 12% -12% -10% -12%;
+  background: radial-gradient(closest-side, rgba(52, 211, 153, 0.34), rgba(99, 102, 241, 0.14) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+.ui-aistage__mascot {
+  position: relative;
+  display: block;
+  width: clamp(180px, 20vw, 280px);
+  height: auto;
+  filter: drop-shadow(0 24px 32px rgba(0, 0, 0, 0.42));
+}
+
+.ui-aistage__title {
+  margin: 0;
+  font-size: clamp(2.5rem, 4.6vw, 4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: #f8fafc;
+  text-wrap: balance;
+}
+
+.ui-aistage__title span {
+  background: linear-gradient(100deg, #4ade80 0%, #22d3ee 55%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.ui-aistage__lead {
+  margin: 0;
+  max-width: 40ch;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: #b3c0d2;
+}
+
+.ui-aistage__steps {
+  display: none;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1024px) {
+  .ui-aistage__steps {
+    display: grid;
+    gap: 18px;
+  }
+}
+
+.ui-aistage__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.ui-aistage__step-no {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px var(--stage-ring);
+  color: var(--ui-accent-text);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Hairline connecting one step to the next */
+.ui-aistage__step:not(:last-child) .ui-aistage__step-no::after {
+  content: '';
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  width: 1px;
+  height: 14px;
+  background: linear-gradient(180deg, var(--stage-ring-strong), transparent);
+}
+
+.ui-aistage__step-text {
+  display: grid;
+  gap: 2px;
+  padding-top: 1px;
+}
+
+.ui-aistage__step-text strong {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #e7edf6;
+}
+
+.ui-aistage__step-text small {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #93a4bb;
+}
+
+/* ---------- Form panel: double-bezel (outer shell + inner core) ---------- */
+
+.ui-aistage__panel {
+  padding: 8px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: 0 0 0 1px var(--stage-ring), 0 44px 90px -36px rgba(0, 0, 0, 0.75);
+}
+
+.ui-aistage__core {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 28px;
+  /* shell radius 32 - shell padding 8 */
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(13, 24, 43, 0.94) 0%, rgba(7, 14, 27, 0.96) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Fields: hairline rings instead of a hard gray border */
+.ui-aistage .ui-input,
+.ui-aistage .ui-select {
+  border-color: transparent;
+  background-color: var(--ui-field-bg);
+  box-shadow: inset 0 0 0 1px var(--ui-field-border), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: box-shadow 420ms var(--ui-ease), background-color 420ms var(--ui-ease);
+}
+
+.ui-aistage .ui-input:hover,
+.ui-aistage .ui-select:hover {
+  border-color: transparent;
+  background-color: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 0 0 1px var(--stage-ring-strong), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.ui-aistage .ui-input:focus-visible,
+.ui-aistage .ui-select:focus-visible {
+  border-color: transparent;
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px var(--ui-accent), 0 0 0 4px var(--ui-accent-ring);
+}
+
+.ui-aistage .ui-label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  color: #c3cfe0;
+}
+
+/* Template cards: nested tray, lit selection */
+.ui-aistage .ui-tpl-grid {
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 14px;
+}
+
+.ui-aistage .ui-tpl {
+  gap: 8px;
+  padding: 6px 6px 12px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: box-shadow 500ms var(--ui-ease), background-color 500ms var(--ui-ease),
+    transform 500ms var(--ui-ease);
+}
+
+.ui-aistage .ui-tpl:hover {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px var(--stage-ring-strong), 0 18px 36px -22px rgba(0, 0, 0, 0.8);
+  transform: translateY(-3px);
+}
+
+.ui-aistage .ui-tpl:active {
+  transform: translateY(-1px) scale(0.985);
+}
+
+.ui-aistage .ui-tpl__thumb {
+  /* tray radius 18 - tray padding 6 */
+  border-radius: 12px;
+  background: #e7ecf2;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.ui-aistage .ui-tpl__thumb img {
+  transition: transform 900ms var(--ui-ease);
+}
+
+.ui-aistage .ui-tpl:hover .ui-tpl__thumb img {
+  transform: scale(1.045);
+}
+
+.ui-aistage .ui-tpl__name {
+  padding: 0 6px;
+}
+
+.ui-aistage .ui-tpl__name + .ui-hint {
+  padding: 0 6px;
+}
+
+.ui-aistage .ui-tpl[aria-pressed='true'] {
+  background: rgba(74, 222, 128, 0.08);
+  box-shadow: inset 0 0 0 1.5px var(--ui-accent), 0 20px 40px -20px rgba(34, 197, 94, 0.6);
+}
+
+.ui-aistage .ui-tpl[aria-pressed='true'] .ui-tpl__name {
+  color: var(--ui-accent-text);
+}
+
+/* Status choices */
+.ui-aistage .ui-choice {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: box-shadow 500ms var(--ui-ease), background-color 500ms var(--ui-ease),
+    transform 300ms var(--ui-ease);
+}
+
+.ui-aistage .ui-choice:hover {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px var(--stage-ring-strong);
+}
+
+.ui-aistage .ui-choice:active {
+  transform: scale(0.985);
+}
+
+.ui-aistage .ui-choice[aria-pressed='true'] {
+  background: rgba(74, 222, 128, 0.08);
+  box-shadow: inset 0 0 0 1.5px var(--ui-accent), 0 16px 34px -20px rgba(34, 197, 94, 0.55);
+}
+
+.ui-aistage .ui-choice > svg {
+  flex: none;
+  box-sizing: content-box;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--ui-accent);
+  color: #04140a;
+}
+
+/* Checkbox: custom tick, aligned to the first line of a wrapping label */
+.ui-aistage .ui-check {
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.ui-aistage .ui-check label {
+  line-height: 1.55;
+  color: #b8c5d8;
+}
+
+.ui-aistage .ui-check input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 7px;
+  background-color: rgba(255, 255, 255, 0.05);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 14px;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.28);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color 300ms var(--ui-ease), box-shadow 300ms var(--ui-ease);
+}
+
+.ui-aistage .ui-check input:checked {
+  background-color: var(--ui-accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2304140a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+  box-shadow: none;
+}
+
+.ui-aistage .ui-check input:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 4px var(--ui-accent-ring);
+}
+
+/* ---------- Actions ---------- */
+
+.ui-aistage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ui-aistage__actions .ui-btn--secondary {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px var(--stage-ring);
+}
+
+.ui-aistage__actions .ui-btn--secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 0 0 1px var(--stage-ring-strong);
+}
+
+/*
+ * The flowing gradient is a pseudo-element translated sideways (transform only),
+ * so it never repaints. Its stops repeat every 50% so the loop is seamless.
+ */
+.ui-aistage .ui-aistage__cta {
+  flex: none;
+  overflow: hidden;
+  isolation: isolate;
+  padding-left: 18px;
+  gap: 10px;
+  background: #4338ca;
+  background-size: auto;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 10px 24px -10px rgba(99, 102, 241, 0.6);
+  transition: box-shadow 500ms var(--ui-ease), transform 500ms var(--ui-ease);
+}
+
+.ui-aistage .ui-aistage__cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 200%;
+  background: linear-gradient(
+    90deg,
+    #10b981 0%,
+    #06b6d4 12.5%,
+    #6366f1 25%,
+    #a855f7 37.5%,
+    #10b981 50%,
+    #06b6d4 62.5%,
+    #6366f1 75%,
+    #a855f7 87.5%,
+    #10b981 100%
+  );
+  transform: translate3d(-50%, 0, 0);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ui-aistage .ui-aistage__cta::before {
+    will-change: transform;
+    animation: ui-cta-flow 7s linear infinite;
+  }
+}
+
+.ui-aistage .ui-aistage__cta:hover:not(:disabled) {
+  background: #4338ca;
+  background-position: 0 0;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36), 0 18px 38px -12px rgba(99, 102, 241, 0.85);
+  transform: translateY(-1px);
+}
+
+.ui-aistage .ui-aistage__cta:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.ui-aistage .ui-aistage__cta:hover:not(:disabled) .ui-btn__trail {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translate3d(2px, -1px, 0) scale(1.06);
+}
+
+@keyframes ui-cta-flow {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ---------- Entrance ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .ui-aistage__top,
+  .ui-aistage__mascot-wrap,
+  .ui-aistage__title,
+  .ui-aistage__lead,
+  .ui-aistage__step {
+    animation: ui-stage-in-soft 900ms var(--ui-ease) backwards;
+  }
+
+  .ui-aistage__panel,
+  .ui-aistage__core > * {
+    animation: ui-stage-in 900ms var(--ui-ease) backwards;
+  }
+
+  .ui-aistage__mascot-wrap {
+    animation-delay: 140ms;
+  }
+
+  .ui-aistage__title {
+    animation-delay: 220ms;
+  }
+
+  .ui-aistage__lead {
+    animation-delay: 300ms;
+  }
+
+  .ui-aistage__step:nth-child(1) {
+    animation-delay: 380ms;
+  }
+
+  .ui-aistage__step:nth-child(2) {
+    animation-delay: 450ms;
+  }
+
+  .ui-aistage__step:nth-child(3) {
+    animation-delay: 520ms;
+  }
+
+  .ui-aistage__panel {
+    animation-delay: 200ms;
+  }
+
+  .ui-aistage__core > :nth-child(1) {
+    animation-delay: 360ms;
+  }
+
+  .ui-aistage__core > :nth-child(2) {
+    animation-delay: 440ms;
+  }
+
+  /* The mascot floats gently once it has landed */
+  .ui-aistage__mascot {
+    animation: ui-float 7s cubic-bezier(0.45, 0, 0.55, 1) 1s infinite alternate;
+  }
+}
+
+@keyframes ui-stage-in-soft {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ui-stage-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 32px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes ui-float {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 767px) {
+  .ui-aistage__inner {
+    gap: 16px;
+    padding: 16px var(--ui-page-pad) 32px;
+  }
+
+  .ui-aistage__intro {
+    gap: 12px;
+  }
+
+  .ui-aistage__panel {
+    padding: 6px;
+    border-radius: 28px;
+  }
+
+  .ui-aistage__core {
+    gap: 20px;
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .ui-aistage .ui-tpl-grid {
+    grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+    gap: 10px;
+  }
+
+  .ui-aistage__actions > * {
+    flex: 1 1 100%;
+  }
+}

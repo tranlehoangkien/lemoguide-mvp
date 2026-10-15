@@ -1,0 +1,60 @@
+/* LemoNetwork admin pages: only what the shared ui.css does not cover (overview chart, detail lists). */
+
+.nadm-overview { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.nadm-panel { display: grid; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
+.nadm-panel h2 { margin: 0; color: var(--ui-text); font-size: 1rem; font-weight: 700; }
+.nadm-panel h2 + .nadm-rows { margin-top: -4px; }
+.nadm-panel .nadm-rows + h2 { margin-top: 6px; }
+
+.nadm-rows { display: grid; margin: 0; padding: 0; list-style: none; }
+.nadm-rows li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 0; color: var(--ui-text-2); font-size: 0.875rem; }
+.nadm-rows li + li { border-top: 1px solid var(--ui-hair); }
+.nadm-rows strong, .nadm-rows a { color: var(--ui-text); font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nadm-rows a { text-decoration: none; }
+.nadm-rows a:hover { color: var(--ui-accent-text); text-decoration: none; }
+
+/* Daily bars: thin single-series columns, 2px gaps, rounded data end on a zero baseline, recessive axis. */
+.nadm-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.nadm-chart { display: grid; gap: 8px; margin: 0; min-width: 0; }
+.nadm-chart figcaption { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; color: var(--ui-text-2); font-size: 0.8125rem; }
+.nadm-chart figcaption strong { color: var(--ui-text); font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.nadm-chart__plot { display: flex; align-items: flex-end; gap: 2px; height: 120px; border-bottom: 1px solid var(--ui-border); }
+.nadm-chart__col { position: relative; display: flex; flex: 1; align-items: flex-end; height: 100%; outline: none; cursor: default; }
+.nadm-chart__bar { display: block; width: 100%; border-radius: 4px 4px 0 0; background: var(--ui-accent); transition: opacity 0.15s var(--ui-ease); }
+.nadm-chart__plot:hover .nadm-chart__bar { opacity: 0.55; }
+.nadm-chart__col:hover .nadm-chart__bar, .nadm-chart__col:focus-visible .nadm-chart__bar { opacity: 1; }
+.nadm-chart__col:focus-visible { box-shadow: inset 0 0 0 2px var(--ui-accent-ring); border-radius: 4px; }
+.nadm-chart__tip { position: absolute; bottom: calc(100% + 6px); left: 50%; z-index: 2; display: none; padding: 4px 8px; border-radius: 6px; background: var(--ui-text); color: var(--ui-surface); font-size: 0.75rem; font-weight: 600; white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+.nadm-chart__col:hover .nadm-chart__tip, .nadm-chart__col:focus-visible .nadm-chart__tip { display: block; }
+.nadm-chart__col:first-child .nadm-chart__tip { left: 0; transform: none; }
+.nadm-chart__col:last-child .nadm-chart__tip { right: 0; left: auto; transform: none; }
+.nadm-chart__axis { display: flex; justify-content: space-between; color: var(--ui-muted); font-size: 0.75rem; }
+
+/* Table cells: one-line preview (full text in the detail modal) and dates that never wrap */
+/* width:0 + min-width:100% keeps the line out of the column's size calculation: it fills whatever width the column
+   gets from its other content and truncates, instead of pushing the table wider than the card. */
+.nadm-line { display: block; width: 0; min-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nadm-nowrap { white-space: nowrap; }
+
+/* Detail modals */
+.nadm-text { margin: 0; color: var(--ui-text); font-size: 0.875rem; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+.nadm-list { display: grid; margin: 0; padding: 0; list-style: none; border: 1px solid var(--ui-border); border-radius: var(--ui-r-field); }
+.nadm-list > li { display: grid; gap: 6px; padding: 12px 14px; }
+.nadm-list > li + li { border-top: 1px solid var(--ui-hair); }
+.nadm-list > li.is-reply { padding-left: 34px; }
+.nadm-list__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.nadm-list__head > div { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.nadm-list__head strong { color: var(--ui-text); font-size: 0.875rem; }
+.nadm-list .ui-hint { font-size: 0.75rem; }
+.nadm-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+
+@media (max-width: 1100px) {
+  .nadm-overview { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .nadm-charts { grid-template-columns: minmax(0, 1fr); }
+  .nadm-panel { padding: 16px; }
+}
+/* Stacked (mobile) tables lay cells out as label + value rows; the one-line preview would squeeze the title there,
+   so it is left to the detail modal. */
+@media (max-width: 767.98px) { .ui-table--stack .nadm-line { display: none; } }

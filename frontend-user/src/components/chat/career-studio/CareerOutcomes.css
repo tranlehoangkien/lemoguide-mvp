@@ -1,0 +1,57 @@
+/* Outcomes, supporting courses and matching jobs after a career plan. Used by Career Studio and the
+ * roadmap detail page, so it relies only on the global --ui-* tokens (no .cvs-* classes). */
+.career-outcomes { display: grid; gap: 20px; margin: 24px 0; }
+.career-outcomes__panel { min-width: 0; padding: 24px 24px 26px; border: 1px solid var(--ui-border); border-radius: var(--ui-r-core); background: var(--ui-surface); box-shadow: var(--ui-shadow-card); }
+
+/* Inside a .ui-page the flex gap spaces the blocks, and each panel sits in the Card shell like its siblings. */
+.career-outcomes--framed { margin: 0; }
+.career-outcomes__panel--framed { border: 0; box-shadow: none; padding: 22px 22px 24px; }
+
+.career-outcomes__head { display: grid; gap: 6px; margin-bottom: 18px; }
+.career-outcomes__title { display: flex; align-items: center; gap: 10px; }
+.career-outcomes__title svg { flex: none; color: var(--ui-text-2); }
+.career-outcomes__title h2 { margin: 0; font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; color: var(--ui-text); }
+.career-outcomes__count { color: var(--ui-muted); font-size: 0.9375rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.career-outcomes__head p { max-width: 75ch; margin: 0; color: var(--ui-muted); font-size: 0.875rem; line-height: 1.6; text-wrap: pretty; }
+
+/* Outcomes: grouped rows split by hairlines, index / skill / evidence. */
+.career-outcomes__list { margin: 0; padding: 0; list-style: none; overflow: hidden; border: 1px solid var(--ui-border); border-radius: var(--ui-r-field); }
+.career-outcomes__list > li { display: grid; grid-template-columns: 28px minmax(140px, 200px) minmax(0, 1fr); align-items: baseline; gap: 4px 16px; padding: 16px 20px; transition: background 0.18s var(--ui-ease); }
+.career-outcomes__list > li + li { border-top: 1px solid var(--ui-hair); }
+.career-outcomes__list > li:hover { background: var(--ui-surface-2); }
+.career-outcomes__index { color: var(--ui-accent-text); font-size: 0.8125rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.career-outcomes__list strong { color: var(--ui-text); font-size: 0.9375rem; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
+.career-outcomes__list p { margin: 0; color: var(--ui-text-2); font-size: 0.875rem; line-height: 1.65; text-wrap: pretty; }
+
+/* Course / job cards */
+.career-outcomes__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 14px; }
+.career-outcomes__card { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 18px; border: 1px solid var(--ui-border); border-radius: var(--ui-r-field); background: var(--ui-surface); overflow-wrap: anywhere; transition: border-color 0.18s var(--ui-ease); }
+.career-outcomes__card:hover, .career-outcomes__card:focus-within { border-color: var(--ui-text-2); }
+.career-outcomes__card h3 { margin: 0; font-size: 0.9375rem; font-weight: 650; line-height: 1.45; }
+.career-outcomes__card a { color: var(--ui-text); text-decoration: none; }
+.career-outcomes__card a:hover { color: var(--ui-accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.career-outcomes__card a:focus-visible { outline: 2px solid var(--ui-accent-text); outline-offset: 2px; border-radius: 4px; }
+.career-outcomes__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin: 0; color: var(--ui-muted); font-size: 0.8125rem; }
+.career-outcomes__meta span { display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
+.career-outcomes__chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.career-outcomes__chips li { padding: 3px 9px; border-radius: 999px; background: var(--ui-surface-2); color: var(--ui-text-2); font-size: 0.75rem; font-weight: 500; }
+.career-outcomes__score { align-self: flex-start; padding: 3px 10px; border-radius: 999px; background: var(--ui-accent-soft); color: var(--ui-accent-text); font-size: 0.75rem; }
+.career-outcomes__score strong { font-weight: 700; font-variant-numeric: tabular-nums; }
+.career-outcomes__missing { margin: 2px 0 0; color: var(--ui-muted); font-size: 0.8125rem; line-height: 1.55; }
+.career-outcomes__missing strong { color: var(--ui-text-2); font-weight: 600; }
+.career-outcomes__note { display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 0; color: var(--ui-muted); font-size: 0.8125rem; line-height: 1.6; }
+.career-outcomes__note svg { flex-shrink: 0; margin-top: 3px; }
+
+@media (max-width: 640px) {
+  .career-outcomes__panel { padding: 18px 16px 20px; }
+  .career-outcomes__list > li { grid-template-columns: 24px minmax(0, 1fr); padding: 14px 16px; }
+  .career-outcomes__list p { grid-column: 2; }
+}
+
+/* Courses the roadmap is split into: order, course, weeks and progress. */
+.career-outcomes__courses a { color: var(--ui-text); text-decoration: none; }
+.career-outcomes__courses a:hover { color: var(--ui-accent-text); text-decoration: underline; text-underline-offset: 3px; }
+.career-outcomes__courses p { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; color: var(--ui-muted); font-variant-numeric: tabular-nums; }
+.career-outcomes__weeks { color: var(--ui-text-2); font-weight: 600; }
+.career-outcomes__done { display: inline-flex; align-items: center; gap: 4px; color: var(--ui-accent-text); font-weight: 600; }
+.career-outcomes__courses > li.is-completed .career-outcomes__index { color: var(--ui-muted); }

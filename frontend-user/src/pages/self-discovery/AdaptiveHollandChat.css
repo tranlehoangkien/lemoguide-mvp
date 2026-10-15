@@ -1,0 +1,109 @@
+/* Trắc nghiệm Holland với AI: the studio layout of the AI Coach tools on the normal light page and the shared
+   --ui-* tokens (so dark mode follows the app theme). Neutral ink, one accent, hierarchy from size and weight. */
+
+.ahs { display: grid; gap: 20px; width: 100%; max-width: 1120px; margin: 0 auto; }
+
+/* ---------- Top bar ---------- */
+.ahs-top { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px 20px; }
+.ahs-back { display: inline-flex; flex: none; align-items: center; gap: 6px; margin-top: 2px; padding: 6px 12px 6px 8px; border: 0; border-radius: 999px; background: transparent; color: var(--ui-muted); font: inherit; font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: background var(--ui-dur) var(--ui-ease), color var(--ui-dur) var(--ui-ease); }
+.ahs-back:hover:not(:disabled) { background: var(--ui-surface-2); color: var(--ui-text); }
+.ahs-back:disabled { opacity: 0.5; cursor: default; }
+.ahs-top__meta { display: grid; flex: 1; min-width: 240px; gap: 4px; }
+.ahs-top__meta h1 { margin: 0; color: var(--ui-text); font-size: 1.375rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.01em; }
+.ahs-top__meta p { max-width: 64ch; margin: 0; color: var(--ui-muted); font-size: 0.875rem; line-height: 1.55; }
+
+/* ---------- Layout ---------- */
+.ahs-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+.ahs-card__body { display: grid; gap: 24px; padding: 26px 30px 24px; }
+
+/* Progress sits on top of the question card */
+.ahs-progress { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; font-variant-numeric: tabular-nums; }
+.ahs-progress__count { color: var(--ui-text); font-size: 0.875rem; font-weight: 700; }
+.ahs-progress__bar { height: 4px; overflow: hidden; border-radius: 999px; background: var(--ui-surface-2); }
+.ahs-progress__bar span { display: block; height: 100%; border-radius: inherit; background: var(--ui-accent); transition: width 0.5s var(--ui-ease); }
+.ahs-progress__pct { color: var(--ui-muted); font-size: 0.8125rem; }
+
+.ahs-notice { display: flex; gap: 10px; margin: 0; padding: 10px 14px; border-radius: var(--ui-r-field); background: var(--ui-surface-2); color: var(--ui-text-2); font-size: 0.8125rem; line-height: 1.55; }
+.ahs-notice svg { flex: none; margin-top: 2px; color: var(--ui-muted); }
+
+/* The model's note: a quiet line, not a box */
+.ahs-ai { display: flex; gap: 12px; padding-left: 14px; border-left: 2px solid var(--ui-accent-soft); }
+.ahs-ai__icon { display: grid; flex: none; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ui-accent-soft); color: var(--ui-accent-text); }
+.ahs-ai__body { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.ahs-ai__label { color: var(--ui-muted); font-size: 0.75rem; font-weight: 600; line-height: 26px; }
+.ahs-ai p { max-width: 68ch; margin: 0; color: var(--ui-text-2); font-size: 0.9375rem; line-height: 1.65; text-wrap: pretty; }
+.ahs-skel { display: block; height: 12px; margin-top: 6px; border-radius: 6px; }
+.ahs-skel--short { width: 55%; }
+
+/* ---------- Question ---------- */
+.ahs-question { display: grid; gap: 10px; }
+.ahs-tag { justify-self: start; padding: 3px 11px; border: 1px solid var(--ui-border); border-radius: 999px; color: var(--ui-text-2); font-size: 0.75rem; font-weight: 600; line-height: 1.5; }
+.ahs-bridge { margin: 2px 0 0; color: var(--ui-muted); font-size: 0.9375rem; line-height: 1.6; }
+.ahs-question h2 { max-width: 40ch; margin: 0; color: var(--ui-text); font-size: 1.5rem; font-weight: 700; line-height: 1.4; letter-spacing: -0.015em; text-wrap: balance; }
+.ahs-question h2:focus { outline: none; }
+.ahs-hint { margin: 0; color: var(--ui-muted); font-size: 0.875rem; }
+
+/* ---------- Answers ---------- */
+.ahs-choice, .ahs-binary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.ahs-choice__more { display: flex; flex-wrap: wrap; grid-column: 1 / -1; gap: 8px; }
+.ahs-option { display: flex; align-items: flex-start; gap: 12px; min-height: 72px; padding: 16px 18px; border: 0; border-radius: var(--ui-r-field); background: var(--ui-surface); box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-text); font: inherit; font-size: 0.9375rem; font-weight: 500; line-height: 1.55; text-align: left; cursor: pointer; transition: box-shadow var(--ui-dur) var(--ui-ease), background var(--ui-dur) var(--ui-ease), transform var(--ui-dur) var(--ui-ease); }
+.ahs-option--center { align-items: center; justify-content: center; min-height: 60px; font-weight: 600; text-align: center; }
+.ahs-option__mark { display: grid; flex: none; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--ui-surface-2); color: var(--ui-text-2); font-size: 0.8125rem; font-weight: 700; transition: background var(--ui-dur) var(--ui-ease), color var(--ui-dur) var(--ui-ease); }
+.ahs-quiet { padding: 7px 14px; border: 0; border-radius: 999px; background: transparent; box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-text-2); font: inherit; font-size: 0.8125rem; font-weight: 600; cursor: pointer; transition: box-shadow var(--ui-dur) var(--ui-ease), color var(--ui-dur) var(--ui-ease); }
+.ahs-level { display: grid; place-items: center; gap: 2px; min-height: 58px; padding: 8px 4px; border: 0; border-radius: var(--ui-r-field); background: var(--ui-surface); box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-text); font: inherit; cursor: pointer; transition: box-shadow var(--ui-dur) var(--ui-ease), background var(--ui-dur) var(--ui-ease), transform var(--ui-dur) var(--ui-ease); }
+.ahs-level strong { font-size: 1rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ahs-level small { color: var(--ui-muted); font-size: 0.6875rem; font-weight: 500; line-height: 1.3; text-align: center; }
+.ahs-option:hover, .ahs-level:hover { box-shadow: inset 0 0 0 1.5px var(--ui-accent); background: var(--ui-accent-soft); }
+.ahs-option:hover .ahs-option__mark { background: var(--ui-accent); color: #ffffff; }
+.ahs-quiet:hover { box-shadow: inset 0 0 0 1px var(--ui-text-2); color: var(--ui-text); }
+.ahs-option:active, .ahs-level:active, .ahs-quiet:active { transform: translateY(1px); }
+.ahs-option:focus-visible, .ahs-level:focus-visible, .ahs-quiet:focus-visible, .ahs-back:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 2px; }
+.ahs-scale { display: grid; gap: 8px; }
+.ahs-scale__row { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.ahs-scale__ends { display: flex; justify-content: space-between; color: var(--ui-muted); font-size: 0.75rem; }
+
+.ahs-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; padding-top: 16px; border-top: 1px solid var(--ui-hair); }
+.ahs-foot .discovery-link { font-size: 0.8125rem; }
+.ahs-notefield { display: grid; flex: 1 1 100%; gap: 6px; color: var(--ui-muted); font-size: 0.8125rem; font-weight: 600; }
+.ahs-notefield textarea { width: 100%; padding: 10px 12px; border: 0; border-radius: var(--ui-r-field); background: var(--ui-surface); box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-text); font: inherit; font-size: 0.875rem; font-weight: 400; line-height: 1.5; resize: vertical; }
+.ahs-notefield textarea:focus { outline: none; box-shadow: inset 0 0 0 1.5px var(--ui-accent); }
+
+/* ---------- Waiting for the model ---------- */
+.ahs-wait { display: grid; gap: 4px; }
+.ahs-wait__label { margin: 0; color: var(--ui-muted); font-size: 0.75rem; font-weight: 600; }
+.ahs-wait__answer { margin: 0 0 18px; color: var(--ui-text); font-size: 1.25rem; font-weight: 700; line-height: 1.45; letter-spacing: -0.01em; }
+
+/* ---------- Journey ---------- */
+.ahs-journey { position: sticky; top: 16px; }
+.ahs-journey__body { display: grid; gap: 16px; max-height: calc(100dvh - 140px); padding: 20px 22px; overflow: auto; }
+.ahs-journey__head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.ahs-journey__head h3 { margin: 0; color: var(--ui-text); font-size: 0.9375rem; font-weight: 700; }
+.ahs-journey__head span { color: var(--ui-muted); font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+.ahs-timeline { position: relative; display: grid; gap: 14px; margin: 0; padding: 0 0 0 18px; list-style: none; }
+.ahs-timeline::before { content: ''; position: absolute; top: 6px; bottom: 6px; left: 3px; width: 1px; background: var(--ui-hair); }
+.ahs-timeline li { position: relative; display: grid; gap: 2px; }
+.ahs-timeline__dot { position: absolute; top: 6px; left: -18px; width: 7px; height: 7px; border-radius: 50%; background: var(--ui-surface); box-shadow: 0 0 0 1.5px var(--ui-border); }
+.ahs-timeline li:first-child .ahs-timeline__dot { background: var(--ui-accent); box-shadow: 0 0 0 3px var(--ui-accent-soft); }
+.ahs-timeline__a { margin: 0; color: var(--ui-text); font-size: 0.8125rem; font-weight: 600; line-height: 1.5; }
+.ahs-timeline__q { display: -webkit-box; margin: 0; overflow: hidden; color: var(--ui-muted); font-size: 0.75rem; line-height: 1.5; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+.ahs-journey__how { margin: 0; padding-top: 14px; border-top: 1px solid var(--ui-hair); color: var(--ui-muted); font-size: 0.75rem; line-height: 1.6; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ahs-card__body > * { animation: ahs-in 0.3s var(--ui-ease) both; }
+}
+@keyframes ahs-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 1024px) {
+  .ahs-grid { grid-template-columns: minmax(0, 1fr); }
+  .ahs-journey { position: static; }
+  .ahs-journey__body { max-height: none; }
+}
+@media (max-width: 640px) {
+  .ahs-card__body { padding: 20px 16px 18px; gap: 20px; }
+  .ahs-top__meta h1 { font-size: 1.1875rem; }
+  .ahs-question h2 { font-size: 1.1875rem; }
+  .ahs-choice, .ahs-binary { grid-template-columns: minmax(0, 1fr); }
+  .ahs-scale__row { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .ahs-progress { grid-template-columns: auto minmax(0, 1fr); }
+  .ahs-progress__pct { grid-column: 1 / -1; }
+}

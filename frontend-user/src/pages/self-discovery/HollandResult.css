@@ -1,0 +1,145 @@
+/* Trắc nghiệm Holland: question controls and result. Shared --ui-* tokens; neutral ink, the accent only for the code. */
+
+/* ---------- Taking the inventory: reuses the ahs-* studio of the AI test (AdaptiveHollandChat.css) ---------- */
+.ahs-progress__count small { margin-left: 1px; color: var(--ui-muted); font-size: 0.75rem; font-weight: 600; }
+.hq-option { position: relative; min-height: 64px; font-size: 1rem; }
+.hq-option kbd { position: absolute; top: 50%; right: 14px; display: grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 6px; background: var(--ui-surface-2); color: var(--ui-muted); font: inherit; font-size: 0.6875rem; font-weight: 700; transform: translateY(-50%); transition: background var(--ui-dur) var(--ui-ease), color var(--ui-dur) var(--ui-ease); }
+.hq-option:hover:not(:disabled) kbd { background: var(--ui-accent); color: #ffffff; }
+.ahs-option.is-pending, .ahs-level.is-pending { background: var(--ui-accent-soft); box-shadow: inset 0 0 0 1.5px var(--ui-accent); }
+.ahs-option.is-pending kbd { background: var(--ui-accent); color: #ffffff; }
+.ahs-option:disabled, .ahs-level:disabled { cursor: default; }
+.ahs-option:disabled:not(.is-pending), .ahs-level:disabled:not(.is-pending) { opacity: 0.55; }
+.ahs-option:disabled:hover:not(.is-pending), .ahs-level:disabled:hover:not(.is-pending) { background: var(--ui-surface); box-shadow: inset 0 0 0 1px var(--ui-border); }
+.ahs-foot .discovery-link { display: inline-flex; align-items: center; gap: 6px; }
+
+/* The four parts beside the question: a quiet stepper, accent only on the current step and finished ticks */
+.hq-parts { display: grid; margin: 0; padding: 0; list-style: none; }
+.hq-parts li { position: relative; display: flex; gap: 12px; padding-bottom: 16px; }
+.hq-parts li:last-child { padding-bottom: 0; }
+.hq-parts li:not(:last-child)::before { content: ''; position: absolute; top: 26px; bottom: 2px; left: 11px; width: 1px; background: var(--ui-hair); }
+.hq-parts__dot { display: grid; flex: none; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: var(--ui-surface); box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-muted); font-size: 0.75rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.hq-parts li.is-current .hq-parts__dot { background: var(--ui-accent); box-shadow: 0 0 0 3px var(--ui-accent-soft); color: #ffffff; }
+.hq-parts li.is-done .hq-parts__dot { background: var(--ui-accent-soft); box-shadow: none; color: var(--ui-accent-text); }
+.hq-parts__body { display: grid; flex: 1; gap: 2px; min-width: 0; padding-top: 2px; }
+.hq-parts__head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.hq-parts__head strong { color: var(--ui-text-2); font-size: 0.875rem; font-weight: 600; }
+.hq-parts__head span { color: var(--ui-muted); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.hq-parts li.is-current .hq-parts__head strong { color: var(--ui-text); font-weight: 700; }
+.hq-parts li.is-current .hq-parts__head span { color: var(--ui-text-2); font-weight: 600; }
+.hq-parts__body p { margin: 0; color: var(--ui-muted); font-size: 0.75rem; line-height: 1.5; }
+.hq-parts__bar { height: 3px; margin-top: 6px; overflow: hidden; border-radius: 999px; background: var(--ui-surface-2); }
+.hq-parts__bar span { display: block; height: 100%; border-radius: inherit; background: var(--ui-accent); transition: width 0.4s var(--ui-ease); }
+
+/* ---------- Result frame: wider than the question column, it holds a chart and two columns ---------- */
+.discovery-focus--wide { max-width: 1080px; }
+.holland-result { display: grid; gap: 16px; }
+.holland-result h2 { margin: 2px 0 0; color: var(--ui-text); font-size: 1.1875rem; font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; }
+.holland-result h2:focus { outline: none; }
+
+/* ---------- Hero: code + reading + next step ---------- */
+.holland-hero__body { display: grid; gap: 24px; padding: 26px 28px 28px; }
+.holland-hero__grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 32px; align-items: start; }
+.holland-code { display: grid; align-content: start; gap: 10px; padding-right: 32px; border-right: 1px solid var(--ui-hair); }
+.holland-code__letters { margin: 0; color: var(--ui-accent-text); font-size: 4rem; font-weight: 700; line-height: 1; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+.holland-code__names { display: grid; gap: 6px; margin: 4px 0 0; padding: 0; list-style: none; }
+.holland-code__names li { display: flex; align-items: baseline; gap: 10px; color: var(--ui-text); font-size: 0.9375rem; font-weight: 500; }
+.holland-code__names strong { width: 1.1em; color: var(--ui-muted); font-size: 0.8125rem; font-weight: 700; }
+.holland-reading { display: grid; gap: 20px; }
+.holland-quality { display: grid; gap: 16px; margin: 0; }
+.holland-quality dt { display: flex; align-items: baseline; gap: 10px; color: var(--ui-text); font-size: 0.9375rem; font-weight: 600; }
+.holland-quality dt span { color: var(--ui-muted); font-size: 0.8125rem; font-weight: 600; }
+.holland-quality dt span::before { content: '·'; margin-right: 10px; }
+.holland-quality dd { max-width: 62ch; margin: 4px 0 0; color: var(--ui-text-2); font-size: 0.9375rem; line-height: 1.65; text-wrap: pretty; }
+.holland-result .discovery-result__actions a, .holland-result .discovery-result__actions a:hover { color: #ffffff; text-decoration: none; }
+
+/* ---------- Adaptive AI test: the model's reading and the conversation ---------- */
+.holland-ai-reading { display: grid; gap: 8px; padding-bottom: 16px; border-bottom: 1px solid var(--ui-hair); }
+.holland-ai-reading .discovery-kicker { display: inline-flex; align-items: center; gap: 6px; color: var(--ui-accent-text); }
+.holland-ai-reading p { max-width: 62ch; margin: 0; color: var(--ui-text); font-size: 0.9375rem; line-height: 1.7; text-wrap: pretty; }
+.holland-ai-reading ul { display: grid; gap: 4px; margin: 0; padding-left: 18px; color: var(--ui-text-2); font-size: 0.875rem; line-height: 1.6; }
+.holland-transcript summary { color: var(--ui-accent-text); font-size: 0.875rem; font-weight: 600; cursor: pointer; }
+.holland-transcript summary:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 3px; border-radius: 4px; }
+.holland-transcript ol { display: grid; margin: 10px 0 0; padding: 0; list-style: none; counter-reset: turn; }
+.holland-transcript li { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--ui-hair); counter-increment: turn; }
+.holland-transcript p { margin: 0; color: var(--ui-text-2); font-size: 0.875rem; line-height: 1.6; }
+.holland-transcript__q { color: var(--ui-text) !important; font-weight: 600; }
+.holland-transcript__q::before { content: counter(turn) ". "; color: var(--ui-muted); }
+.holland-transcript p > span:first-child { display: inline-block; min-width: 72px; margin-right: 8px; color: var(--ui-muted); font-size: 0.8125rem; font-weight: 600; }
+
+/* ---------- RIASEC profile: hexagon beside one-line scores ---------- */
+.holland-profile-card .ui-card__body { display: grid; gap: 16px; }
+.holland-profile { display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 36px; align-items: center; }
+.holland-hex { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto; }
+.holland-hex__grid { fill: none; stroke: var(--ui-hair); stroke-width: 1; }
+.holland-hex__shape { fill: var(--ui-accent-soft); fill-opacity: 0.7; stroke: var(--ui-accent); stroke-width: 1.75; stroke-linejoin: round; }
+.holland-hex__dot { fill: var(--ui-accent); }
+.holland-hex__label text { fill: var(--ui-muted); font-size: 14px; font-weight: 700; }
+.holland-hex__label .holland-hex__name { font-size: 10.5px; font-weight: 500; }
+.holland-hex__label.is-top text { fill: var(--ui-text); }
+.holland-profile__side { display: grid; gap: 14px; min-width: 0; }
+.holland-scores { display: grid; margin: 0; padding: 0; list-style: none; }
+.holland-scores li { display: grid; grid-template-columns: 1.25rem 7.5rem minmax(0, 1fr) 3.75rem; align-items: center; gap: 12px; padding: 11px 0; }
+.holland-scores li + li { border-top: 1px solid var(--ui-hair); }
+.holland-scores__code { color: var(--ui-muted); font-size: 0.8125rem; font-weight: 700; }
+.holland-scores__name { color: var(--ui-text-2); font-size: 0.9375rem; font-weight: 500; }
+.holland-scores .discovery-score { text-align: right; font-size: 0.9375rem; }
+/* Only the three letters of the code carry the accent; the rest read as quiet ink. */
+.holland-scores li:not(.is-top) .ui-bar > span { background: var(--ui-muted); opacity: 0.45; }
+.holland-scores li:not(.is-top) .discovery-score { color: var(--ui-text-2); }
+.holland-scores li.is-top .holland-scores__code, .holland-scores li.is-top .holland-scores__name { color: var(--ui-text); }
+.holland-scores li.is-top .holland-scores__name { font-weight: 600; }
+
+.holland-detail summary { display: inline-flex; align-items: center; gap: 6px; color: var(--ui-accent-text); font-size: 0.875rem; font-weight: 600; cursor: pointer; list-style: none; }
+.holland-detail summary::-webkit-details-marker { display: none; }
+.holland-detail summary::after { content: ''; width: 6px; height: 6px; margin-top: -3px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform var(--ui-dur) var(--ui-ease); }
+.holland-detail[open] summary::after { margin-top: 3px; transform: rotate(-135deg); }
+.holland-detail summary:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 3px; border-radius: 4px; }
+.holland-detail table { width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+.holland-detail th, .holland-detail td { padding: 8px 6px; border-top: 1px solid var(--ui-hair); color: var(--ui-text-2); font-weight: 500; text-align: right; }
+.holland-detail thead th { border-top: 0; color: var(--ui-muted); font-size: 0.75rem; font-weight: 600; }
+.holland-detail thead th small { color: var(--ui-muted); font-weight: 500; }
+.holland-detail th:first-child { text-align: left; color: var(--ui-text); font-weight: 700; }
+.holland-detail td strong { color: var(--ui-text); font-weight: 700; }
+
+/* ---------- Type portraits beside careers ---------- */
+.holland-columns { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.holland-columns .ui-card__body { display: grid; gap: 12px; }
+.holland-types { display: grid; margin: 0; padding: 0; list-style: none; }
+.holland-types li { display: grid; gap: 8px; padding: 18px 0; }
+.holland-types li:first-child { padding-top: 0; }
+.holland-types li:last-child { padding-bottom: 0; }
+.holland-types li + li { border-top: 1px solid var(--ui-hair); }
+.holland-types h3 { display: flex; align-items: baseline; gap: 10px; margin: 0; color: var(--ui-text); font-size: 1rem; font-weight: 700; }
+.holland-types h3 small { color: var(--ui-muted); font-size: 0.8125rem; font-weight: 500; }
+.holland-types__code { color: var(--ui-accent-text); font-weight: 700; }
+.holland-types__summary { margin: 0; color: var(--ui-text); font-size: 0.9375rem; line-height: 1.65; text-wrap: pretty; }
+.holland-types dl { display: grid; gap: 6px; margin: 2px 0 0; }
+.holland-types dl > div { display: grid; grid-template-columns: 5.75rem minmax(0, 1fr); gap: 10px; }
+.holland-types dt { color: var(--ui-muted); font-size: 0.8125rem; font-weight: 600; line-height: 1.65; }
+.holland-types dd { margin: 0; color: var(--ui-text-2); font-size: 0.875rem; line-height: 1.6; }
+
+.holland-careers { display: grid; margin: 0; padding: 0; list-style: none; }
+.holland-careers li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--ui-hair); }
+.holland-careers li > div { display: grid; gap: 1px; min-width: 0; }
+.holland-careers strong { color: var(--ui-text); font-size: 0.875rem; font-weight: 600; }
+.holland-careers li > div span { color: var(--ui-muted); font-size: 0.75rem; }
+.holland-careers__code { flex: none; min-width: 2.75rem; padding: 3px 7px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-text-2); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-align: center; }
+.holland-careers__code.is-strong { box-shadow: inset 0 0 0 1px var(--ui-text-2); color: var(--ui-text); }
+
+@media (max-width: 1024px) {
+  .holland-columns { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .holland-hero__grid, .holland-profile { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .holland-code { padding: 0 0 20px; border-right: 0; border-bottom: 1px solid var(--ui-hair); }
+  .holland-hex { max-width: 270px; }
+}
+@media (max-width: 640px) {
+  .hq-option kbd, .hq-keys { display: none; }
+  .holland-hero__body { padding: 18px 16px 20px; }
+  .holland-code__letters { font-size: 3.25rem; }
+  .holland-scores li { grid-template-columns: 1.1rem 5.75rem minmax(0, 1fr) 3.25rem; gap: 8px; }
+  .holland-types dl > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .holland-detail table { font-size: 0.75rem; }
+  .holland-detail th, .holland-detail td { padding: 7px 3px; }
+}

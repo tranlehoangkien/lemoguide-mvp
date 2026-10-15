@@ -1,0 +1,49 @@
+.user-usage { display: grid; gap: 20px; }
+
+.user-usage__plan { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+/* One bordered group with hairline dividers instead of a box per meter. */
+.user-usage__group {
+  border: 1px solid var(--ui-hair);
+  border-radius: 16px;
+  background: var(--ui-surface);
+  overflow: hidden;
+}
+.user-usage__meter { display: grid; gap: 10px; padding: 16px 18px; }
+.user-usage__meter + .user-usage__meter { border-top: 1px solid var(--ui-hair); }
+
+.user-usage__heading { display: flex; justify-content: space-between; align-items: baseline; gap: 4px 16px; flex-wrap: wrap; }
+.user-usage__heading h3 { margin: 0; font-size: 0.9375rem; font-weight: 600; letter-spacing: -0.005em; color: var(--ui-text); }
+.user-usage__value { font-size: 0.875rem; color: var(--ui-muted); font-variant-numeric: tabular-nums; }
+.user-usage__value b { font-size: 1rem; font-weight: 700; color: var(--ui-text); }
+
+.user-usage__track { height: 6px; border-radius: 999px; background: var(--ui-surface-2); overflow: hidden; }
+.user-usage__track > span { display: block; height: 100%; background: var(--ui-accent); border-radius: inherit; }
+.user-usage__meter[data-exhausted='true'] .user-usage__track > span { background: var(--ui-danger); }
+
+.user-usage__meta {
+  display: flex; justify-content: space-between; gap: 2px 16px; flex-wrap: wrap;
+  margin: 0; font-size: 0.8125rem; line-height: 1.4; color: var(--ui-muted); font-variant-numeric: tabular-nums;
+}
+.user-usage__warning { margin: 0; font-size: 0.875rem; line-height: 1.5; color: var(--ui-danger); }
+:root[data-theme='dark'] .user-usage__warning { color: #fca5a5; }
+
+.user-usage__note { display: grid; gap: 4px; padding: 0 2px; }
+.user-usage__note h3 { margin: 0; font-size: 0.8125rem; font-weight: 600; color: var(--ui-text-2); }
+.user-usage__note p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+
+/* Loading skeleton with the same rows as the real meters. */
+.user-usage__bone { display: block; border-radius: 999px; background: var(--ui-surface-2); }
+.user-usage__bone--title { width: 38%; height: 14px; }
+.user-usage__bone--bar { width: 100%; height: 6px; }
+.user-usage__bone--meta { width: 56%; height: 11px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .user-usage__track > span { transition: width 600ms var(--ui-ease); }
+  .user-usage__bone { animation: user-usage-pulse 1.4s var(--ui-ease) infinite; }
+}
+@keyframes user-usage-pulse { 50% { opacity: 0.45; } }
+
+@media (max-width: 480px) {
+  .user-usage__meter { padding: 14px; }
+}

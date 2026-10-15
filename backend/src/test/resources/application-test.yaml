@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:lemoguide;DB_CLOSE_DELAY=-1;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      # No MySQL in tests: let Hibernate build the schema from entities instead.
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: false
+
+  # Migration scripts are MySQL-dialect; run schema from entities in tests instead.
+  flyway:
+    enabled: false
+
+logging:
+  level:
+    lemonadex.lemoguide: DEBUG

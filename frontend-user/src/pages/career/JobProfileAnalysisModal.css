@@ -1,0 +1,963 @@
+/* =====================================================================
+ * JobProfileAnalysisModal.css
+ * Styling for the Job <-> Profile Analysis Modal in LemoGuide User portal
+ * ===================================================================== */
+
+.job-analysis-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Hero card summarizing job and profile match score */
+.job-analysis-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px;
+  border-radius: var(--ui-r-core);
+  background: var(--ui-surface-2);
+  box-shadow: inset 0 0 0 1px var(--ui-border);
+}
+
+.job-analysis-hero__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+  width: 100%;
+}
+
+.job-analysis-hero__info {
+  min-width: 0;
+}
+
+.job-analysis-hero__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--ui-text);
+  line-height: 1.3;
+}
+
+.job-analysis-hero__company {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 0;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+}
+
+.job-analysis-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: var(--ui-muted);
+}
+
+.job-analysis-hero__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.job-analysis-hero__right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.job-analysis-hero__score-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ui-muted);
+}
+
+/* AI Coaching Tab */
+.job-analysis-ai {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* The panel lays itself out by its own width (modal width), not the viewport's */
+  container-type: inline-size;
+}
+
+.job-analysis-ai__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.job-analysis-ai__content {
+  padding: 20px;
+  border: 1px solid var(--ui-hair);
+  border-radius: var(--ui-r-core);
+  background: var(--ui-surface);
+  line-height: 1.65;
+  font-size: 0.9375rem;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.job-analysis-ai__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  gap: 14px;
+}
+
+.job-analysis-ai__loading-text {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ui-text);
+}
+
+.job-analysis-ai__loading-hint {
+  font-size: 0.8125rem;
+  color: var(--ui-muted);
+  max-width: 440px;
+}
+
+.job-analysis-ai__banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  padding: 20px 24px;
+  border-radius: var(--ui-r-core);
+  background: var(--ui-surface-2);
+  box-shadow: inset 0 0 0 1px var(--ui-border);
+}
+
+.job-analysis-ai__banner-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.job-analysis-ai__banner-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ui-surface);
+  color: var(--ui-accent-text);
+  box-shadow: inset 0 0 0 1px var(--ui-border);
+}
+
+.job-analysis-ai__banner-text strong {
+  display: block;
+  color: var(--ui-text);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.job-analysis-ai__banner-text > div > span:not(.job-ai-error) {
+  display: block;
+  margin-top: 2px;
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.job-analysis-hero__salary-icon {
+  color: var(--ui-accent-text);
+}
+
+/* Wider than the shared xl (920px) so the analysis can use two columns */
+.ui-modal.job-analysis-dialog {
+  --modal-w: 1180px;
+  /* Flex item of the overlay: let it shrink below its content's min width on phones
+   * (the tab bar scrolls sideways instead of pushing the dialog off-screen). */
+  min-width: 0;
+}
+
+.job-analysis-modal {
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------------
+ * Structured AI analysis (JobAiAnalysisPanel)
+ * Neutral ink on white, one green accent (ticks, primary actions).
+ * Hierarchy comes from size, weight and spacing, not from colour:
+ * priority chips are solid / outline / quiet, lists are grouped rows
+ * split by hairlines instead of a card per item.
+ * --------------------------------------------------------------------- */
+.job-ai-toolbar__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.job-ai-toolbar__title svg {
+  flex-shrink: 0;
+}
+
+.job-ai-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.job-ai-toolbar__model {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.job-ai-toolbar__label {
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.job-ai-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.job-ai-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.8125rem;
+  color: var(--ui-text-2);
+  font-weight: 600;
+}
+
+/* ---------- Verdict ---------- */
+.job-ai-verdict {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  padding: 26px 28px;
+  border-radius: var(--ui-r-core);
+  background: var(--ui-surface);
+  box-shadow: inset 0 0 0 1px var(--ui-border), var(--ui-shadow-card);
+}
+
+.job-ai-verdict__score {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.job-ai-verdict .ui-match-ring {
+  --ring-c: var(--ui-accent);
+  width: 92px;
+  height: 92px;
+}
+
+.job-ai-verdict .ui-match-ring::before {
+  inset: 7px;
+}
+
+.job-ai-verdict .ui-match-ring > strong {
+  font-size: 1.375rem;
+  letter-spacing: -0.03em;
+}
+
+.job-ai-verdict__caption {
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.job-ai-verdict__body {
+  min-width: 0;
+}
+
+.job-ai-verdict__title {
+  margin: 0;
+  color: var(--ui-text);
+  font-size: 1.3125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.job-ai-verdict__summary {
+  max-width: 76ch;
+  margin: 8px 0 0;
+  color: var(--ui-text-2);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.job-ai-verdict__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.job-ai-verdict__meta li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Section heads ---------- */
+.job-ai-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.job-ai-head__icon {
+  flex: none;
+  color: var(--ui-accent-text);
+}
+
+.job-ai-head__title {
+  margin: 0;
+  color: var(--ui-text);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.job-ai-head__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--ui-surface-2);
+  color: var(--ui-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.job-ai-empty {
+  margin: 0;
+  padding: 16px 18px;
+  border: 1px dashed var(--ui-border);
+  border-radius: var(--ui-r-field);
+  color: var(--ui-muted);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+/* ---------- Chips: solid = most important, outline = normal, quiet = optional ---------- */
+.job-ai-tag {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 3px 11px;
+  border: 1px solid var(--ui-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ui-text-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.job-ai-tag--strong {
+  border-color: var(--ui-text);
+  background: var(--ui-text);
+  color: var(--ui-surface);
+}
+
+.job-ai-tag--quiet {
+  border-color: transparent;
+  background: var(--ui-surface-2);
+  color: var(--ui-muted);
+}
+
+.job-ai-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ui-accent-text);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.job-ai-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Grouped rows: strengths, gaps, courses ---------- */
+.job-ai-list {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  list-style: none;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-r-field);
+  background: var(--ui-surface);
+}
+
+.job-ai-list > li + li {
+  border-top: 1px solid var(--ui-hair);
+}
+
+.job-ai-row-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 6px 14px;
+}
+
+.job-ai-row-top .job-ai-tag {
+  margin-top: 1px;
+}
+
+.job-ai-row-top strong {
+  color: var(--ui-text);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.job-ai-strength {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 12px;
+  padding: 16px 18px;
+  transition: background 0.18s var(--ui-ease);
+}
+
+.job-ai-strength:hover,
+.job-ai-gap:hover,
+.job-ai-course:hover {
+  background: var(--ui-surface-2);
+}
+
+.job-ai-strength__mark {
+  margin-top: 3px;
+  color: var(--ui-accent-text);
+}
+
+.job-ai-strength__body p {
+  margin: 4px 0 0;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* ---------- Gaps ---------- */
+.job-ai-gap {
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px 20px;
+  transition: background 0.18s var(--ui-ease);
+}
+
+.job-ai-gap .job-ai-row-top strong {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.job-ai-gap__effort {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.job-ai-gap__why {
+  margin: 0;
+  color: var(--ui-text-2);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.job-ai-gap__how {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+  padding: 14px 16px;
+  border-radius: var(--ui-r-field);
+  background: var(--ui-surface-2);
+}
+
+.job-ai-gap__how-title {
+  color: var(--ui-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.job-ai-gap__how ol {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.job-ai-gap__how li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 8px;
+  color: var(--ui-text-2);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  counter-increment: step;
+  text-wrap: pretty;
+}
+
+.job-ai-gap__how li::before {
+  content: counter(step) '.';
+  color: var(--ui-accent-text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Courses ---------- */
+.job-ai-course {
+  display: grid;
+  gap: 4px;
+  padding: 16px 18px;
+  transition: background 0.18s var(--ui-ease);
+}
+
+.job-ai-course__meta {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+}
+
+.job-ai-course__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  margin-top: 8px;
+  color: var(--ui-text-2);
+  font-size: 0.875rem;
+}
+
+/* ---------- Action plan: vertical timeline ---------- */
+.job-ai-timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.job-ai-timeline li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.job-ai-timeline li:last-child {
+  padding-bottom: 0;
+}
+
+.job-ai-timeline li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  bottom: 4px;
+  left: 13px;
+  width: 1px;
+  background: var(--ui-border);
+}
+
+.job-ai-timeline__node {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--ui-text);
+  border-radius: 50%;
+  color: var(--ui-text);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.job-ai-timeline .job-ai-row-top {
+  min-height: 28px;
+  justify-content: flex-start;
+}
+
+.job-ai-timeline__body p {
+  margin: 4px 0 0;
+  color: var(--ui-text-2);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+/* ---------- CV tips / interview focus: plain lists under a rule ---------- */
+.job-ai-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+  margin-top: 8px;
+}
+
+.job-ai-section--tips,
+.job-ai-section--interview {
+  padding-top: 28px;
+  border-top: 1px solid var(--ui-border);
+}
+
+.job-ai-checks {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.job-ai-checks li {
+  position: relative;
+  padding-left: 20px;
+  color: var(--ui-text-2);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.job-ai-checks li::before {
+  content: '';
+  position: absolute;
+  top: 0.72em;
+  left: 3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ui-accent);
+}
+
+/* ---------- Layout: one column by default, two stacks when the panel is wide ---------- */
+.job-ai-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 8px;
+}
+
+.job-ai-col {
+  display: contents;
+}
+
+.job-ai-section--strengths { order: 1; }
+.job-ai-section--gaps { order: 2; }
+.job-ai-section--courses { order: 3; }
+.job-ai-section--plan { order: 4; }
+
+@container (min-width: 840px) {
+  .job-ai-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+    gap: 48px;
+  }
+
+  .job-ai-col {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    min-width: 0;
+  }
+}
+
+@container (max-width: 560px) {
+  .job-ai-verdict {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    padding: 22px;
+  }
+
+  .job-ai-two-col {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+}
+
+/* ---------- Running: skeleton in the shape of the result ---------- */
+.job-ai-running {
+  display: grid;
+  gap: 24px;
+}
+
+.job-ai-running__msg {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.job-ai-running__msg p {
+  margin: 0;
+}
+
+.job-ai-running__msg .job-analysis-ai__loading-hint {
+  margin-top: 2px;
+  max-width: 60ch;
+}
+
+.job-ai-skeleton {
+  display: grid;
+  gap: 16px;
+}
+
+.job-ai-skeleton__verdict {
+  height: 150px;
+}
+
+.job-ai-skeleton__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 16px;
+}
+
+.job-ai-skeleton__col {
+  height: 240px;
+}
+
+@media (max-width: 640px) {
+  .job-analysis-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .job-analysis-hero__right {
+    align-self: center;
+  }
+  .job-analysis-ai__banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .job-ai-two-col,
+  .job-ai-skeleton__cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Skill fit tab: neutral groups, priority shown by chip weight ---------- */
+.job-fit {
+  display: grid;
+  gap: 20px;
+}
+
+.job-fit__summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border-radius: var(--ui-r-core);
+  background: var(--ui-surface);
+  box-shadow: inset 0 0 0 1px var(--ui-border), var(--ui-shadow-card);
+}
+
+.job-fit__summary .ui-match-ring {
+  flex: none;
+  width: 68px;
+  height: 68px;
+}
+
+.job-fit__summary-title {
+  display: block;
+  color: var(--ui-text);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.job-fit__summary-text {
+  margin: 4px 0 0;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+}
+
+.job-fit__groups {
+  overflow: hidden;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-r-field);
+  background: var(--ui-surface);
+}
+
+.job-fit__group {
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px 20px;
+}
+
+.job-fit__group + .job-fit__group {
+  border-top: 1px solid var(--ui-hair);
+}
+
+.job-fit__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.job-fit__head svg {
+  flex: none;
+  color: var(--ui-text-2);
+}
+
+.job-fit__head h4 {
+  margin: 0;
+  color: var(--ui-text);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.job-fit__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--ui-surface-2);
+  color: var(--ui-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.job-fit__hint {
+  margin-left: auto;
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+}
+
+.job-fit__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.job-fit__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border: 1px solid var(--ui-border);
+  border-radius: 999px;
+  color: var(--ui-text-2);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.job-fit__chip em {
+  color: var(--ui-muted);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.job-fit__chip--have {
+  border-color: transparent;
+  background: var(--ui-accent-soft);
+  color: var(--ui-accent-text);
+}
+
+.job-fit__chip--have svg {
+  flex: none;
+}
+
+.job-fit__chip--strong {
+  border-color: var(--ui-text);
+  background: var(--ui-text);
+  color: var(--ui-surface);
+}
+
+.job-fit__empty {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 0.875rem;
+}
+
+.job-fit__tip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 16px 20px;
+  border-radius: var(--ui-r-field);
+  background: var(--ui-surface-2);
+}
+
+.job-fit__tip > div {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.job-fit__tip strong {
+  display: block;
+  color: var(--ui-text);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.job-fit__tip span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ui-muted);
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .job-fit__summary {
+    padding: 18px;
+  }
+
+  .job-fit__hint {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}

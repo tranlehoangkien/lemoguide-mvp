@@ -1,0 +1,71 @@
+/* Reports ("Thống kê & Báo cáo") and system settings pages: only what ui.css does not already cover. */
+
+/* Ranked value inside a table cell: number on top, single-accent bar below (magnitude, one series). */
+.ac-bar-cell { display: grid; gap: 6px; min-width: 160px; }
+.ac-bar-cell__value { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; color: var(--ui-text); font-size: 0.875rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.ac-bar-cell__value small { color: var(--ui-muted); font-size: 0.75rem; font-weight: 500; }
+.ac-rank { display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px; border-radius: var(--ui-r-pill); background: var(--ui-surface-2); color: var(--ui-text-2); font-size: 0.8125rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ac-rank.is-top { background: var(--ui-accent-soft); color: var(--ui-accent-text); }
+.ac-num { font-variant-numeric: tabular-nums; }
+
+/* Two-column report body: main card + side card. */
+.ac-split { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ac-panel { display: grid; gap: 14px; padding: 20px 22px 22px; min-width: 0; }
+.ac-panel h2 { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--ui-text); font-size: 1rem; font-weight: 700; }
+.ac-panel h2 svg { color: var(--ui-accent-text); }
+.ac-muted { margin: 0; color: var(--ui-muted); font-size: 0.8125rem; line-height: 1.6; }
+
+/* Share rows (target mode split, skill types, publish modes): label + value + bar. */
+.ac-shares { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.ac-shares li { display: grid; gap: 6px; }
+.ac-shares__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.ac-shares__head strong { color: var(--ui-text); font-size: 0.9375rem; font-weight: 600; }
+.ac-shares__head span { color: var(--ui-text-2); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+.ac-shares__head span b { color: var(--ui-text); font-weight: 700; }
+
+/* Settings form */
+.ac-choices { display: grid; gap: 10px; }
+.ac-choice { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border: 0; border-radius: var(--ui-r-field); background: var(--ui-surface); box-shadow: inset 0 0 0 1px var(--ui-border); color: var(--ui-text); font: inherit; text-align: left; cursor: pointer; transition: box-shadow var(--ui-dur) var(--ui-ease), background var(--ui-dur) var(--ui-ease); }
+.ac-choice:hover:not(:disabled) { box-shadow: inset 0 0 0 1px var(--ui-text-2); }
+.ac-choice:focus-visible { outline: 2px solid var(--ui-accent); outline-offset: 2px; }
+.ac-choice[aria-checked='true'] { background: var(--ui-accent-soft); box-shadow: inset 0 0 0 1.5px var(--ui-accent); }
+.ac-choice:disabled { opacity: 0.55; cursor: not-allowed; }
+.ac-choice__dot { display: grid; flex: none; place-items: center; width: 18px; height: 18px; margin-top: 2px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--ui-border); }
+.ac-choice[aria-checked='true'] .ac-choice__dot { box-shadow: inset 0 0 0 5px var(--ui-accent); }
+.ac-choice__text { display: grid; gap: 2px; }
+.ac-choice__text strong { font-size: 0.9375rem; font-weight: 600; }
+.ac-choice__text small { color: var(--ui-muted); font-size: 0.8125rem; line-height: 1.5; }
+.ac-switch-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; border-radius: var(--ui-r-field); box-shadow: inset 0 0 0 1px var(--ui-border); }
+.ac-switch-row > div { display: grid; gap: 2px; }
+.ac-switch-row strong { color: var(--ui-text); font-size: 0.9375rem; font-weight: 600; }
+.ac-switch-row small { color: var(--ui-muted); font-size: 0.8125rem; line-height: 1.5; }
+.ac-presets { display: flex; flex-wrap: wrap; gap: 8px; }
+.ac-form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; padding-top: 16px; border-top: 1px solid var(--ui-hair); }
+.ac-form-foot .ac-muted { flex: 1 1 240px; }
+.ac-section-label { margin: 4px 0 0; color: var(--ui-text); font-size: 0.9375rem; font-weight: 700; }
+
+/* Permissions */
+.ac-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ac-perm-list { display: grid; gap: 10px; }
+.ac-perm { display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: var(--ui-r-field); box-shadow: inset 0 0 0 1px var(--ui-border); cursor: pointer; }
+.ac-perm:has(input:checked) { background: var(--ui-accent-soft); box-shadow: inset 0 0 0 1.5px var(--ui-accent); }
+.ac-perm:has(input:disabled) { cursor: not-allowed; opacity: 0.7; }
+.ac-perm input { flex: none; width: 18px; height: 18px; margin-top: 2px; accent-color: var(--ui-accent); }
+.ac-perm span { display: grid; gap: 2px; }
+.ac-perm strong { color: var(--ui-text); font-size: 0.9375rem; font-weight: 600; }
+.ac-perm small { color: var(--ui-muted); font-size: 0.8125rem; }
+
+/* Activity log */
+/* Stat values that are names (e.g. the most popular skill) stay on one line; the full name is in the table below. */
+.ac-stats .ui-stat__value { min-width: 0; }
+.ac-stats .ui-stat__value strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-input.ac-date { width: 164px; min-height: 40px; height: 40px; padding: 0 14px; border-radius: var(--ui-r-pill); }
+.ac-path { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.8125rem; color: var(--ui-text-2); overflow-wrap: anywhere; }
+
+@media (max-width: 1100px) {
+  .ac-split { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .ac-panel { padding: 16px; }
+  .ui-input.ac-date { width: 100%; }
+}
